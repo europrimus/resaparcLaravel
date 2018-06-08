@@ -14,7 +14,8 @@ class ManegeController extends Controller
      */
     public function index()
     {
-        //
+      $maneges = manege::all();
+      return view('maneges')->with('maneges',$maneges);
     }
 
     /**

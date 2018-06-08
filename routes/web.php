@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'ReservationController@index' );
+Route::get('/reservation', 'ReservationController@index' );
+Route::get('/manege', 'ManegeController@index' );
