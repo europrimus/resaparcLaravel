@@ -1,9 +1,12 @@
 @include('include/head')
+
 <h2>Manège</h2>
 <ul>
-  @foreach ($maneges as $manege)
+  @forelse ($maneges as $manege)
     <li>{{ $manege }}</li>
-  @endforeach
+  @empty
+    <li>Pas de manège</li>
+  @endforelse
 </ul>
 
 @include('include/footer')

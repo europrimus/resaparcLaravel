@@ -12,7 +12,7 @@ class ManegeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($message='')
     {
       $maneges = manege::all();
       return view('maneges')->with('maneges',$maneges);

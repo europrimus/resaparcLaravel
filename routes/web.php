@@ -11,6 +11,7 @@
 |
 */
 
-Route::get('/', 'ReservationController@index' );
+Route::get('/', 'BilletController@index' );
+Route::post('/', 'BilletController@register' );
 Route::get('/reservation', 'ReservationController@index' );
 Route::get('/manege', 'ManegeController@index' );

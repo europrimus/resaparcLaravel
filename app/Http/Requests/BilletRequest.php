@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class BilletRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            "billet" => 'bail|required|integer' //|size:8
+        ];
+    }
+
+    public function messages()
+    {
+      return [
+          'billet.required' => 'Vous devez entrer un numéro de billet',
+          'billet.size' => 'Vous devez entrer exactement :size carractères',
+          'billet.integer' => 'Vous devez entrer uniquement des chiffres',
+      ];
+    }
+}

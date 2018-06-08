@@ -66,3 +66,10 @@
     </head>
   <body>
     <h1>Resaparc</h1>
+    @isset($message)
+      <p>{{ $message }}</p>
+    @endisset
+
+    @if(null !== session('billet') )
+      <p>Billet : {{ session('billet') }}</p>
+    @endif
