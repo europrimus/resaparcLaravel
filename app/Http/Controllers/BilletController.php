@@ -7,15 +7,16 @@ use App\Http\Requests\BilletRequest;
 
 class BilletController extends Controller
 {
-  public function index($message='')
+  public function index(Request $message)
   {
-    return view('inscription');
+    return view('inscription')->with('message',$message->message);
   }
 
   public function deconexion()
   {
     session(['billet'=> null]);
-    return view('inscription');
+    $message="Vous êtes déconecté";
+    return view('inscription')->with('message',$message);
   }
 
   public function register(BilletRequest $request)

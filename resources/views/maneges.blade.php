@@ -5,7 +5,11 @@
   @forelse ($maneges as $manege)
     <li>
       <details>
-        <summary>{{ $manege["nom"] }} <a href="reserver/{{ $manege['id'] }}">Réserver</a></summary>
+        <summary>{{ $manege["nom"] }}
+          @if(null !== session('billet') )
+            <a href="reserver/{{ $manege['id'] }}">Réserver</a>
+          @endif
+        </summary>
         <ul>
           <li>Nombre de place : {{ $manege["nb_places_reservables"] }}</li>
           <li>Durée : {{ $manege["duree"] }}</li>

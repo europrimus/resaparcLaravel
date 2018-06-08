@@ -16,15 +16,11 @@ class ReservationController extends Controller
      */
     public function index($message='')
     {
-      /*
-      $reservations = reservation::all();
-      $manegesId=[];
-      foreach ($reservations as $reservation) {
-        $manegesId[]=$reservation["id_manege"];
-      };
-      $maneges = manege::find($manegesId);
-      //dd($maneges);
-      */
+      if(null === session('billet') ){
+        $message = "Vous devez entrer votre numéro de billet pour réserver";
+        return redirect()->action('BilletController@index', [ 'message'=>$message ] );
+      }
+
       $reservations = DB::table('reservation')
             ->join('manege', 'reservation.id_manege', '=', 'manege.id')
             ->where('numero_billet', '=', session('billet') )
@@ -45,10 +41,16 @@ class ReservationController extends Controller
      */
     public function store($id)
     {
-      $r = DB::select('SELECT reserver_prochain_tour( :id_manege , :numero_billet );',
-       [ "id_manege" => $id, "numero_billet" => session('billet') ]);
-      $message = "Réservation prise en compte";
-      return $this->index($message);
+      if(null === session('billet') ){
+        $message = "Vous devez entrer votre numéro de billet pour réserver";
+        return redirect()->action('BilletController@index', [ 'message'=>$message ] );
+      }
+
+    $r = DB::select('SELECT reserver_prochain_tour( :id_manege , :numero_billet );',
+     [ "id_manege" => $id, "numero_billet" => session('billet') ]);
+    $message = "Réservation prise en compte";
+    return $this->index($message);
+
     }
 
 
