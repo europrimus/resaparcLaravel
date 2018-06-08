@@ -24,6 +24,7 @@ class ReservationController extends Controller
       $reservations = DB::table('reservation')
             ->join('manege', 'reservation.id_manege', '=', 'manege.id')
             ->where('numero_billet', '=', session('billet') )
+            ->where('horaire', '>=', date("Y-m-d H:i:s") )
             ->select('reservation.id','horaire', 'id_manege', 'nom', 'duree', 'numero_plan', 'consignes')
             ->get();
       //dd($reservations);
