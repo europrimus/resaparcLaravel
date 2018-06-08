@@ -12,6 +12,12 @@ class BilletController extends Controller
     return view('inscription');
   }
 
+  public function deconexion()
+  {
+    session(['billet'=> null]);
+    return view('inscription');
+  }
+
   public function register(BilletRequest $request)
   {
     $billet = $request->validated();

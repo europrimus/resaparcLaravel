@@ -24,7 +24,7 @@ class BilletRequest extends FormRequest
     public function rules()
     {
         return [
-            "billet" => 'bail|required|integer' //|size:8
+            "billet" => 'bail|required|size:8' //|size:8 ne marche pas avec integer
         ];
     }
 
@@ -33,7 +33,6 @@ class BilletRequest extends FormRequest
       return [
           'billet.required' => 'Vous devez entrer un numéro de billet',
           'billet.size' => 'Vous devez entrer exactement :size carractères',
-          'billet.integer' => 'Vous devez entrer uniquement des chiffres',
       ];
     }
 }

@@ -12,10 +12,10 @@ class ReservationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($message='')
     {
         $reservations = reservation::all();
-        return view('reservations')->with('reservations',$reservations);
+        return view('reservations')->with('reservations',$reservations)->with("message",$message);
     }
 
     /**

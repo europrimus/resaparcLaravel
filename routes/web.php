@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'BilletController@index' );
+Route::get('/deconexion', 'BilletController@deconexion' );
 Route::post('/', 'BilletController@register' );
 Route::get('/reservation', 'ReservationController@index' );
 Route::get('/manege', 'ManegeController@index' );
