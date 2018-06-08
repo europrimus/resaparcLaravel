@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\manege;
 
 class ReservationController extends Controller
 {
@@ -14,19 +16,26 @@ class ReservationController extends Controller
      */
     public function index($message='')
     {
-        $reservations = reservation::all();
-        return view('reservations')->with('reservations',$reservations)->with("message",$message);
-    }
+      /*
+      $reservations = reservation::all();
+      $manegesId=[];
+      foreach ($reservations as $reservation) {
+        $manegesId[]=$reservation["id_manege"];
+      };
+      $maneges = manege::find($manegesId);
+      //dd($maneges);
+      */
+      $reservations = DB::table('reservation')
+            ->join('manege', 'reservation.id_manege', '=', 'manege.id')
+            ->where('numero_billet', '=', session('billet') )
+            ->select('reservation.id','horaire', 'id_manege', 'nom', 'duree', 'numero_plan', 'consignes')
+            ->get();
+      //dd($reservations);
+      return view('reservations')
+        ->with('reservations',$reservations)
+        ->with("message",$message);
+      }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -34,44 +43,14 @@ class ReservationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id)
     {
-        //
+      $r = DB::select('SELECT reserver_prochain_tour( :id_manege , :numero_billet );',
+       [ "id_manege" => $id, "numero_billet" => session('billet') ]);
+      $message = "Réservation prise en compte";
+      return $this->index($message);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\reservation  $reservation
-     * @return \Illuminate\Http\Response
-     */
-    public function show(reservation $reservation)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\reservation  $reservation
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(reservation $reservation)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\reservation  $reservation
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, reservation $reservation)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -79,8 +58,13 @@ class ReservationController extends Controller
      * @param  \App\reservation  $reservation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(reservation $reservation)
+    public function destroy($id)
     {
-        //
+      DB::table('reservation')
+            ->where('numero_billet', '=', session('billet') )
+            ->where('id', '=', $id )
+            ->delete();
+      $message = "Réservation annulé";
+      return $this->index($message);
     }
 }

@@ -14,5 +14,9 @@
 Route::get('/', 'BilletController@index' );
 Route::get('/deconexion', 'BilletController@deconexion' );
 Route::post('/', 'BilletController@register' );
+
 Route::get('/reservation', 'ReservationController@index' );
+Route::get('/reserver/{id}', 'ReservationController@store' )->where('id','[0-9]+');
+Route::get('/reservation/{id}/annuler', 'ReservationController@destroy' )->where('id','[0-9]+');
+
 Route::get('/manege', 'ManegeController@index' );
