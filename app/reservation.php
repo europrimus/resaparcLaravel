@@ -20,7 +20,7 @@ class reservation extends Model
       $reservations = DB::table('reservation')
             ->join('manege', 'reservation.id_manege', '=', 'manege.id')
             ->where('numero_billet', '=', $billet )
-            ->where('horaire', '>=', date("Y-m-d H:i:s") )
+            ->where('horaire', '>=', now() )
             ->orderBy('horaire', 'desc')
             ->select('reservation.id','horaire', 'id_manege', 'nom', 'duree', 'numero_plan', 'consignes')
             ->get();

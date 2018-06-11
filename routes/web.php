@@ -21,4 +21,6 @@ Route::get('/reservation/{id}/annuler', 'ReservationController@destroy' )->where
 
 Route::get('/manege', 'ManegeController@index' );
 
-Route::get('/api', 'API@router' );
+Route::post('/api', 'API@router' );
+Route::get('/api', 'API@router' );    // pour débug
+Route::get('/mobi', function(){return view('mobile');} );

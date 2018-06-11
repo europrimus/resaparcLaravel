@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\billet;
 use App\manege;
 use App\reservation;
+use App\Http\Requests\apiRequest;
 
 class API extends Controller
 {
-    public function router(Request $request)
+    public function router(apiRequest $request)
     {
       //dd($request);
       switch ($request->action) {

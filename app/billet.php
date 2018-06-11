@@ -14,8 +14,13 @@ class billet extends Model
     }
 
     public function connexion( $request ){
-      $billet = $request->validated();
-      session(['billet'=> $billet['billet']]);
+      if( is_string($request) ){
+        $billet=$request;
+      }else{
+        $requeteValide = $request->validated();
+        $billet = $requeteValide['billet'];
+      }
+      session(['billet'=> $billet]);
       return "Billet enregistré";
     }
 
