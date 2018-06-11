@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\reservation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Facades\DB;
 use App\manege;
 
 class ReservationController extends Controller
@@ -21,13 +21,8 @@ class ReservationController extends Controller
         return redirect()->action('BilletController@index', [ 'message'=>$message ] );
       }
 
-      $reservations = DB::table('reservation')
-            ->join('manege', 'reservation.id_manege', '=', 'manege.id')
-            ->where('numero_billet', '=', session('billet') )
-            ->where('horaire', '>=', date("Y-m-d H:i:s") )
-            ->select('reservation.id','horaire', 'id_manege', 'nom', 'duree', 'numero_plan', 'consignes')
-            ->get();
-      //dd($reservations);
+      $resaObj= new reservation;
+      $reservations=$resaObj->get( session('billet') );
       return view('reservations')
         ->with('reservations',$reservations)
         ->with("message",$message);
@@ -47,9 +42,13 @@ class ReservationController extends Controller
         return redirect()->action('BilletController@index', [ 'message'=>$message ] );
       }
 
-    $r = DB::select('SELECT reserver_prochain_tour( :id_manege , :numero_billet );',
-     [ "id_manege" => $id, "numero_billet" => session('billet') ]);
-    $message = "Réservation prise en compte";
+    $resaObj= new reservation;
+    $retour=$resaObj->set( $id , session('billet') );
+    if($retour){
+      $message = "Réservation prise en compte";
+    }else{
+      $message = "Erreur: Réservation non prise en compte";
+    }
     return $this->index($message);
 
     }
@@ -63,11 +62,13 @@ class ReservationController extends Controller
      */
     public function destroy($id)
     {
-      DB::table('reservation')
-            ->where('numero_billet', '=', session('billet') )
-            ->where('id', '=', $id )
-            ->delete();
-      $message = "Réservation annulé";
+      $resaObj= new reservation;
+      $retour=$resaObj->delette($id , session('billet') );
+      if($retour){
+        $message = "Réservation annulé";
+      }else{
+        $message = "Erreur: Impossible d'annuler la réservation";
+      }
       return $this->index($message);
     }
 }
