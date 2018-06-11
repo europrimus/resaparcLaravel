@@ -6,52 +6,20 @@ use Illuminate\Http\Request;
 use App\billet;
 use App\manege;
 use App\reservation;
-use App\Http\Requests\apiRequest;
+use App\Http\Requests\BilletRequest;
 
 class API extends Controller
 {
-    public function router(apiRequest $request)
-    {
-      //dd($request);
-      switch ($request->action) {
-        case 'connexion':
-          return $this->connexion($request->data);
-          break;
-        case 'deconnexion':
-          return $this->deconnexion($request->_token);
-          break;
-        case 'manege':
-          return $this->manege($request->_token,$request->data);
-          break;
-        case 'reserver':
-          return $this->reserver($request->_token,$request->data);
-          break;
-        case 'reservation':
-          return $this->reservation($request->_token,$request->data);
-          break;
-        case 'annuler':
-          return $this->annuler($request->_token,$request->data);
-          break;
 
-        default:
-        return response()->json([
-            'message' => 'Action non reconnu',
-            ]);
-          break;
-      }
-    }
-
-
-    public function connexion( $numBillet ){
+    public function connexion(BilletRequest $request ){
       $billetObj = new billet;
-      $message = $billetObj->connexion( $numBillet );
+      $message = $billetObj->connexion( $request );
       return response()->json([
           'message' => $message,
-          '_token' => csrf_token(),
           ]);
     }
 
-    public function deconnexion($_token){
+    public function deconnexion(){
       $billetObj = new billet;
       $message=$billetObj->deconnexion();
       return response()->json([
@@ -59,7 +27,7 @@ class API extends Controller
           ]);
     }
 
-    public function manege($_token){
+    public function manege(){
       $maneges = manege::all()->toArray();
       $message = "Liste des manèges";
       //dd($maneges);
@@ -67,11 +35,10 @@ class API extends Controller
       return response()->json([
         'message' => $message,
         'manege' => $maneges,
-        '_token' => csrf_token(),
         ]);
     }
 
-    public function reserver( $_token, $idManege ){
+    public function reserver( $idManege ){
       $billetObj = new billet;
       if( !$billetObj->check() ){
         $message = "Vous devez entrer votre numéro de billet pour réserver";
@@ -81,11 +48,10 @@ class API extends Controller
       }
       return response()->json([
           'message' => $message,
-          '_token' => csrf_token(),
           ]);
     }
 
-    public function reservation($_token){
+    public function reservation(){
       $billetObj = new billet;
       if( !$billetObj->check() ){
         $message = "Vous devez entrer votre numéro de billet pour réserver";
@@ -98,16 +64,14 @@ class API extends Controller
       return response()->json([
           'reservations' => $reservations,
           'message' => $message,
-          '_token' => csrf_token(),
           ]);
     }
 
-    public function annuler( $_token, $idResa ){
+    public function annuler( $idResa ){
       $resaObj= new reservation;
       $message=$resaObj->delette( $idResa , session('billet') );
       return response()->json([
           'message' => $message,
-          '_token' => csrf_token(),
           ]);
     }
 }

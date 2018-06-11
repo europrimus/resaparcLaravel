@@ -1,12 +1,21 @@
 // on récupère la validation du billet
 jQuery("#inscription form").submit( inscription )
 
+let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+jQuery.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
 // fait les requetes vers le serveur
+// plus utilisé
 function requete(json){
   console.warn("requete");
   console.log(json);
-  //jQuery.post( "/api", json , router, "json");
-  jQuery.post( "/api", json , router);
+  jQuery.post( "/api", json , router, "json");
+  //jQuery.post( "/api", json , router);
 }
 
 // traite les retours serveurs
@@ -22,6 +31,6 @@ function inscription(event){
   console.warn("inscription");
   let billet = jQuery("#billet")[0].value;
   console.log( "billet",billet );
-  let json = JSON.stringify( { action: "connexion", data: billet } );
-  requete(json);
+  let json = { billet: billet, _token: CSRF_TOKEN };
+  jQuery.post( "/api/connexion", json , router, "json");
 }
