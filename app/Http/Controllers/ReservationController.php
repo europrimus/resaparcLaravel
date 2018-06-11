@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\reservation;
 use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\DB;
 use App\manege;
+use App\billet;
 
 class ReservationController extends Controller
 {
@@ -16,7 +16,8 @@ class ReservationController extends Controller
      */
     public function index($message='')
     {
-      if(null === session('billet') ){
+      $billetObj = new billet;
+      if( !$billetObj->check() ){
         $message = "Vous devez entrer votre numéro de billet pour réserver";
         return redirect()->action('BilletController@index', [ 'message'=>$message ] );
       }
@@ -37,18 +38,14 @@ class ReservationController extends Controller
      */
     public function store($id)
     {
-      if(null === session('billet') ){
+      $billetObj = new billet;
+      if( !$billetObj->check() ){
         $message = "Vous devez entrer votre numéro de billet pour réserver";
         return redirect()->action('BilletController@index', [ 'message'=>$message ] );
       }
 
     $resaObj= new reservation;
-    $retour=$resaObj->set( $id , session('billet') );
-    if($retour){
-      $message = "Réservation prise en compte";
-    }else{
-      $message = "Erreur: Réservation non prise en compte";
-    }
+    $message=$resaObj->set( $id , session('billet') );
     return $this->index($message);
 
     }
@@ -63,12 +60,7 @@ class ReservationController extends Controller
     public function destroy($id)
     {
       $resaObj= new reservation;
-      $retour=$resaObj->delette($id , session('billet') );
-      if($retour){
-        $message = "Réservation annulé";
-      }else{
-        $message = "Erreur: Impossible d'annuler la réservation";
-      }
+      $message=$resaObj->delette($id , session('billet') );
       return $this->index($message);
     }
 }

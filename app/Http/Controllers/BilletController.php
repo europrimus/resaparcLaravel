@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\BilletRequest;
+use App\billet;
 
 class BilletController extends Controller
 {
@@ -14,25 +15,16 @@ class BilletController extends Controller
 
   public function deconexion()
   {
-    session(['billet'=> null]);
-    $message="Vous êtes déconecté";
+    $billetObj = new billet;
+    $message=$billetObj->deconnexion();
     return view('inscription')->with('message',$message);
   }
 
   public function register(BilletRequest $request)
   {
-    $billet = $request->validated();
-    session(['billet'=> $billet['billet']]);
-    $message = "Billet enregistré";
+    $billetObj = new billet;
+    $message = $billetObj->connexion( $request );
     return redirect()->action('ManegeController@index')->with('message',$message);
   }
 
-  public function check(){
-    if( null !== session('billet') ){
-      return true;
-    }else{
-      return false;
-    }
-
-  }
 }

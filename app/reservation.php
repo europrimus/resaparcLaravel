@@ -28,19 +28,29 @@ class reservation extends Model
     }
 
     public function set( $id , $billet ){
-      $r = DB::select('SELECT reserver_prochain_tour( :id_manege , :numero_billet );',
+      $retour = DB::select('SELECT reserver_prochain_tour( :id_manege , :numero_billet );',
         [ "id_manege" => $id, "numero_billet" => $billet ] );
       //dd($r);
       //verifier le résultat
-      return true;
+      if($retour){
+        $message = "Réservation prise en compte";
+      }else{
+        $message = "Erreur: Réservation non prise en compte";
+      }
+      return $message;
     }
 
     public function delette($id ,$billet ){
-      DB::table('reservation')
+      $retour = DB::table('reservation')
             ->where('numero_billet', '=', $billet )
             ->where('id', '=', $id )
             ->delete();
       //verifier le résultat
-      return true;
+      if($retour){
+        $message = "Réservation annulé";
+      }else{
+        $message = "Erreur: Impossible d'annuler la réservation";
+      }
+      return $message;
     }
 }
