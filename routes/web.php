@@ -20,3 +20,5 @@ Route::get('/reserver/{id}', 'ReservationController@store' )->where('id','[0-9]+
 Route::get('/reservation/{id}/annuler', 'ReservationController@destroy' )->where('id','[0-9]+');
 
 Route::get('/manege', 'ManegeController@index' );
+
+Route::get('/api', 'API@router' );

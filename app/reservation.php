@@ -27,9 +27,12 @@ class reservation extends Model
     return $reservations;
     }
 
-    public function set( $id , $billet ){
+    public function set( $idManege , $billet ){
+      if(empty($idManege)){
+        return "Vous devez choisir un manège pour réserver";
+      }
       $retour = DB::select('SELECT reserver_prochain_tour( :id_manege , :numero_billet );',
-        [ "id_manege" => $id, "numero_billet" => $billet ] );
+        [ "id_manege" => $idManege, "numero_billet" => $billet ] );
       //dd($r);
       //verifier le résultat
       if($retour){

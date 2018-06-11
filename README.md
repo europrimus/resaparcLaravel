@@ -18,3 +18,22 @@ Créer un utilisateur PG
     CREATE ROLE resaparc LOGIN
       ENCRYPTED PASSWORD 'vive les licornes!'
       NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+
+## API
+l'API est accessible par /api  
+Elle attend sur POST un json et renvois un json  
+Un échange de token permet de vérifier les transactions
+
+### Les actions
+| action       | _token | data              | retour                          |
+|:------------|:-------:|:------------------|:--------------------------------|
+| connexion   |         |numéro de  billet  | _token                          |
+| deconnexion | oui     |                   | message                         |
+| manege      | oui     |                   | _token, liste des manèges       |
+| reserver    | oui     | id manège         | _token, message                 |
+| reservation | oui     |                   | _token, liste des réservations  |
+| annuler     | oui     | id réservation    | _token, message                 |
+
+### Exemple de json
+
+      {"reservations":[{"id":34,"horaire":"2018-06-11 10:10:00","id_manege":2,"nom":"Psych\u00e9d\u00e9licorne","duree":"00:10:00","numero_plan":2,"consignes":"Hauteur min. 1m55"}],"message":"","_token":"KS9skWd33922OHYqzlYuvvu1eZIAtNHvRTVMcgYU"}
