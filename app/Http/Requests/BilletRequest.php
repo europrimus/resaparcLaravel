@@ -24,7 +24,7 @@ class BilletRequest extends FormRequest
     public function rules()
     {
         return [
-            "billet" => 'bail|required|size:8|alpha_num' //|size:8 ne marche pas avec integer
+            "billet" => 'bail|required|size:14|alpha_num' //|size:8 ne marche pas avec integer
         ];
     }
 
